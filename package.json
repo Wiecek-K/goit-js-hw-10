@@ -4,10 +4,9 @@
   "description": "",
   "homepage": "https://wiecek-k.github.io/goit-js-hw-10/",
   "scripts": {
-    "pretest"  : "echo '--- rozpoczynam ---'",
-    "test"     : "echo '--- działam ---'",
-    "posttest" : "echo '--- kończę ---'",
-
+    "pretest": "echo '--- rozpoczynam ---'",
+    "test": "echo '--- działam ---'",
+    "posttest": "echo '--- kończę ---'",
     "start": "parcel src/*.html",
     "build": "parcel build src/*.html --public-url /goit-js-hw-10/"
   },
@@ -22,7 +21,10 @@
     "url": "https://github.com/goitacademy/parcel-project-template/issues"
   },
   "dependencies": {
-    "modern-normalize": "^1.1.0"
+    "flatpickr": "^4.6.13",
+    "lodash": "^4.17.21",
+    "modern-normalize": "^1.1.0",
+    "notiflix": "^3.2.6"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.6.0",
