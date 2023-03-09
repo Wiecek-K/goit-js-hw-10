@@ -12,9 +12,9 @@ const DEBOUNCE_DELAY = 300;
 inputbox.addEventListener(
 	"input",
 	debounce(() => {
-		countryList.innerHTML = "";
-		countryCard.innerHTML = "";
 		if (!inputbox.value.trim()) {
+			countryList.innerHTML = "";
+			countryCard.innerHTML = "";
 			return;
 		}
 		fetchCountries(inputbox.value)
@@ -26,9 +26,11 @@ inputbox.addEventListener(
 					return;
 				}
 				if (recivedData.length > 1) {
+					countryCard.innerHTML = "";
 					createCountryList(recivedData);
 					return;
 				}
+				countryList.innerHTML = "";
 				createCountryCard(...recivedData);
 			})
 			.catch(() => {
