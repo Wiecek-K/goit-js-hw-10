@@ -4,43 +4,55 @@ import { Notify } from "notiflix";
 import { fetchCountries } from "./fetchCountries.js";
 
 const inputbox = document.querySelector("#search-box");
-const contryList = document.querySelector(".country-list");
-const contryCard = document.querySelector(".country-info");
+const countryList = document.querySelector(".country-list");
+const countryCard = document.querySelector(".country-info");
 
 const DEBOUNCE_DELAY = 300;
+
 inputbox.addEventListener(
 	"input",
 	debounce(() => {
+		countryList.innerHTML = "";
+		countryCard.innerHTML = "";
 		if (!inputbox.value.trim()) {
 			return;
 		}
 		fetchCountries(inputbox.value)
-			.then((recivedCountryData) => {
-				console.log(recivedCountryData.length);
-				if (recivedCountryData.length > 10) {
+			.then((recivedData) => {
+				if (recivedData.length > 10) {
 					Notify.info(
 						"Too many matches found. Please enter a more specific name.",
 					);
 					return;
 				}
-				if (recivedCountryData.length > 1) {
-					console.log("lista");
+				if (recivedData.length > 1) {
+					createCountryList(recivedData);
 					return;
 				}
-				const [ourContry] = recivedCountryData;
-				contryCard.innerHTML = `
-				<div><img src=${ourContry.flags.svg} alt=${ourContry.flags.alt}/>
-				<h3>${ourContry.name.official}<h3></div>
-				<div><h4>Capital:</h4><p>${ourContry.capital}</p></div>
-				<div><h4>Population:</h4><p>${ourContry.population}</p></div>
-				<div><h4>Languages:</h4><p> ${Object.values(ourContry.languages).join(
-					", ",
-				)}</p></div>`;
-
-				console.log(recivedCountryData);
+				createCountryCard(...recivedData);
 			})
 			.catch(() => {
 				Notify.failure("Oops, there is no country with that name");
 			});
-	}, 300),
+	}, DEBOUNCE_DELAY),
 );
+function createCountryList(array) {
+	const markup = array
+		.map(
+			({ flags, name }) =>
+				`<li><img src="${flags.svg}" alt="${flags.alt}" />
+			<p>${name.common}</p></li>`,
+		)
+		.join("");
+	countryList.innerHTML = markup;
+}
+function createCountryCard({ flags, name, capital, population, languages }) {
+	countryCard.innerHTML = `
+		<div><img src=${flags.svg} alt=${flags.alt}/>
+		<h3>${name.common}<h3></div>
+		<div><h4>Capital:</h4><p>${capital}</p></div>
+		<div><h4>Population:</h4><p>${population}</p></div>
+		<div><h4>Languages:</h4><p> ${Object.values(languages).join(
+			", ",
+		)}</p></div>`;
+}
