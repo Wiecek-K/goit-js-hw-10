@@ -32,6 +32,21 @@ body {
 }
 .country-info {
   font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.country-info div:first-child {
+  font-size: 2.5rem;
+  margin-bottom: 0.3em;
+}
+.country-info h3 {
+  margin: 0;
+}
+.country-info h4,
+.country-info p {
+  margin: 0;
 }
 .country-info div {
   display: flex;
