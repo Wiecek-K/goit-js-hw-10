@@ -53,8 +53,24 @@ function createCountryCard({ flags, name, capital, population, languages }) {
 		<div><img src=${flags.svg} alt=${flags.alt}/>
 		<h3>${name.common}<h3></div>
 		<div><h4>Capital:</h4><p>${capital}</p></div>
-		<div><h4>Population:</h4><p>${population}</p></div>
+		<div><h4>Population:</h4><p>${convertBigNumbers(population)}</p></div>
 		<div><h4>Languages:</h4><p> ${Object.values(languages).join(
 			", ",
 		)}</p></div>`;
+}
+function convertBigNumbers(x) {
+	if (x < 1e3) {
+		return x;
+	}
+	if (x < 1e6) {
+		return `${Math.floor(x / 1000)}K ${x % 1000}`;
+	}
+	if (x < 1e9) {
+		return `${Math.floor(x / 1e6)}M ${Math.floor((x % 1e6) / 1000)}K ${
+			x % 1000
+		}`;
+	}
+	return `${Math.floor(x / 1e9)}G ${Math.floor((x % 1e9) / 1e6)}M ${Math.floor(
+		(x % 1e6) / 1e3,
+	)}K ${x % 1000}`;
 }
