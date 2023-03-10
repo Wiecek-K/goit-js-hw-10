@@ -41,24 +41,17 @@ inputbox.addEventListener(
 function createCountryList(array) {
 	const markup = array
 		.map(
-			// ({ flags, name }) =>
-			// 	`<li ><button type="button" data-name=${name.common}><img  src="${flags.svg}" alt="${flags.alt}"/>
-			// 	<p>${name.common}</p></button></li>`,
 			({ flags, name }) =>
-				`<li data-name=${name.common}><img  data-name=${name.common} src="${flags.svg}" alt="${flags.alt}"/>
-			<p data-name=${name.common} >${name.common}</p></li>`,
+				`<li data-name=${name.common}><img   src="${flags.svg}" alt="${flags.alt}"/>
+			<p>${name.common}</p></li>`,
+			// 	({ flags, name }) =>
+			// 		`<li data-name=${name.common}><img  data-name=${name.common} src="${flags.svg}" alt="${flags.alt}"/>
+			// 	<p data-name=${name.common} >${name.common}</p></li>`,
+			// )
 		)
 		.join("");
 	countryList.innerHTML = markup;
 	countryList.addEventListener("click", selectCountry);
-
-	function selectCountry(event) {
-		const selectedCountry = event.target.dataset.name;
-		fetchCountries(selectedCountry).then((recivedData) => {
-			countryList.innerHTML = "";
-			createCountryCard(...recivedData);
-		});
-	}
 }
 function createCountryCard({ flags, name, capital, population, languages }) {
 	countryCard.innerHTML = `
@@ -85,4 +78,15 @@ function convertBigNumbers(x) {
 	return `${Math.floor(x / 1e9)}G ${Math.floor((x % 1e9) / 1e6)}M ${Math.floor(
 		(x % 1e6) / 1e3,
 	)}K ${x % 1000}`;
+}
+function selectCountry(event) {
+	if (event.target.nodeName !== "LI") {
+		console.log(event.target.nodeName);
+		return;
+	}
+	const selectedCountry = event.target.dataset.name;
+	fetchCountries(selectedCountry).then((recivedData) => {
+		countryList.innerHTML = "";
+		createCountryCard(...recivedData);
+	});
 }

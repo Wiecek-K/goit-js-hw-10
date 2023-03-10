@@ -30,10 +30,14 @@ body {
 }
 .country-list img {
   height: 1em;
+  pointer-events: none;
+  /*klikniecie w p/img nie trigeruje eventu od razu tylko w fazie bubble leci wyzej*/
 }
 .country-list p {
   margin: 0;
   line-height: 2em;
+  pointer-events: none;
+  /*klikniecie w p/img nie trigeruje eventu od razu tylko w fazie bubble leci wyzej*/
 }
 .country-info {
   font-size: 1.5rem;
