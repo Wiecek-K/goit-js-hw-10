@@ -24,11 +24,16 @@ body {
 }
 .country-list li {
   display: flex;
-  gap: 1em;
+  gap: 0.35em;
   align-items: center;
+  cursor: pointer;
 }
 .country-list img {
   height: 1em;
+}
+.country-list p {
+  margin: 0;
+  line-height: 2em;
 }
 .country-info {
   font-size: 1.5rem;

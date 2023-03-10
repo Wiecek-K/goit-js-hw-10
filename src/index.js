@@ -41,12 +41,24 @@ inputbox.addEventListener(
 function createCountryList(array) {
 	const markup = array
 		.map(
+			// ({ flags, name }) =>
+			// 	`<li ><button type="button" data-name=${name.common}><img  src="${flags.svg}" alt="${flags.alt}"/>
+			// 	<p>${name.common}</p></button></li>`,
 			({ flags, name }) =>
-				`<li><img src="${flags.svg}" alt="${flags.alt}" />
-			<p>${name.common}</p></li>`,
+				`<li data-name=${name.common}><img  data-name=${name.common} src="${flags.svg}" alt="${flags.alt}"/>
+			<p data-name=${name.common} >${name.common}</p></li>`,
 		)
 		.join("");
 	countryList.innerHTML = markup;
+	countryList.addEventListener("click", selectCountry);
+
+	function selectCountry(event) {
+		const selectedCountry = event.target.dataset.name;
+		fetchCountries(selectedCountry).then((recivedData) => {
+			countryList.innerHTML = "";
+			createCountryCard(...recivedData);
+		});
+	}
 }
 function createCountryCard({ flags, name, capital, population, languages }) {
 	countryCard.innerHTML = `
