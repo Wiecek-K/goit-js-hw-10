@@ -11,43 +11,37 @@ const DEBOUNCE_DELAY = 300;
 
 inputbox.addEventListener(
 	"input",
-	debounce(() => {
+	debounce(async () => {
+		console.log("weszlo");
 		if (!inputbox.value.trim()) {
 			countryList.innerHTML = "";
 			countryCard.innerHTML = "";
+			console.log("wyszlo");
 			return;
 		}
-		fetchCountries(inputbox.value)
-			.then((recivedData) => {
-				if (recivedData.length > 10) {
-					Notify.info(
-						"Too many matches found. Please enter a more specific name.",
-					);
-					return;
-				}
-				if (recivedData.length > 1) {
-					countryCard.innerHTML = "";
-					createCountryList(recivedData);
-					return;
-				}
-				countryList.innerHTML = "";
-				createCountryCard(...recivedData);
-			})
-			.catch(() => {
-				Notify.failure("Oops, there is no country with that name");
-			});
-	}, DEBOUNCE_DELAY),
+		const recivedData = await fetchCountries(inputbox.value);
+		console.log(recivedData);
+		if (recivedData.length > 10) {
+			Notify.info("Too many matches found. Please enter a more specific name.");
+			return;
+		}
+		if (recivedData.length > 1) {
+			countryCard.innerHTML = "";
+			createCountryList(recivedData);
+			return;
+		}
+		countryList.innerHTML = "";
+		createCountryCard(...recivedData);
+	}),
+	DEBOUNCE_DELAY,
 );
+
 function createCountryList(array) {
 	const markup = array
 		.map(
 			({ flags, name }) =>
 				`<li data-name=${name.common}><img   src="${flags.svg}" alt="${flags.alt}"/>
 			<p>${name.common}</p></li>`,
-			// 	({ flags, name }) =>
-			// 		`<li data-name=${name.common}><img  data-name=${name.common} src="${flags.svg}" alt="${flags.alt}"/>
-			// 	<p data-name=${name.common} >${name.common}</p></li>`,
-			// )
 		)
 		.join("");
 	countryList.innerHTML = markup;
