@@ -12,11 +12,9 @@ const DEBOUNCE_DELAY = 300;
 inputbox.addEventListener(
 	"input",
 	debounce(async () => {
-		console.log("weszlo");
 		if (!inputbox.value.trim()) {
 			countryList.innerHTML = "";
 			countryCard.innerHTML = "";
-			console.log("wyszlo");
 			return;
 		}
 		const recivedData = await fetchCountries(inputbox.value);
