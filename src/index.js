@@ -37,13 +37,20 @@ inputbox.addEventListener(
 function createCountryList(array) {
 	const markup = array
 		.map(
-			({ flags, name }) =>
-				`<li data-name=${name.common}><img   src="${flags.svg}" alt="${flags.alt}"/>
+			({ flags, name }, i) =>
+				`<li data-index="${i}"><img src="${flags.svg}" alt="${flags.alt}"/>
 			<p>${name.common}</p></li>`,
 		)
 		.join("");
 	countryList.innerHTML = markup;
-	countryList.addEventListener("click", selectCountry);
+
+	countryList.addEventListener("click", (e) => {
+		if (e.target.nodeName !== "LI") {
+			return;
+		}
+		countryList.innerHTML = "";
+		createCountryCard(array[Number(e.target.dataset.index)]);
+	});
 }
 function createCountryCard({ flags, name, capital, population, languages }) {
 	countryCard.innerHTML = `
@@ -55,6 +62,7 @@ function createCountryCard({ flags, name, capital, population, languages }) {
 			", ",
 		)}</p></div>`;
 }
+
 function convertBigNumbers(x) {
 	if (x < 1e3) {
 		return x;
@@ -70,15 +78,4 @@ function convertBigNumbers(x) {
 	return `${Math.floor(x / 1e9)}G ${Math.floor((x % 1e9) / 1e6)}M ${Math.floor(
 		(x % 1e6) / 1e3,
 	)}K ${x % 1000}`;
-}
-function selectCountry(event) {
-	if (event.target.nodeName !== "LI") {
-		console.log(event.target.nodeName);
-		return;
-	}
-	const selectedCountry = event.target.dataset.name;
-	fetchCountries(selectedCountry).then((recivedData) => {
-		countryList.innerHTML = "";
-		createCountryCard(...recivedData);
-	});
 }
